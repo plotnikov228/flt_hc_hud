@@ -1,6 +1,6 @@
 # flt_hc_hud
 
-A new Flutter project.
+Forked and upgraded ver for new flutter versions
 
 ## Getting Started
 
