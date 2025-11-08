@@ -1,40 +1,24 @@
-package com.example.flt_hc_hud;
-
-import androidx.annotation.NonNull;
-
-import android.os.Build;
-
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
-import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
+import io.flutter.plugin.common.MethodChannel.Result;
 
-/** FltHcHudPlugin */
-public final class FltHcHudPlugin implements FlutterPlugin, MethodChannel.MethodCallHandler {
-    /// The MethodChannel that will handle communication between Flutter and native Android
+public class FltHcHudPlugin implements FlutterPlugin, MethodChannel.MethodCallHandler {
     private MethodChannel channel;
 
     @Override
-    public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
-        channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "flt_hc_hud");
+    public void onAttachedToEngine(FlutterPluginBinding binding) {
+        channel = new MethodChannel(binding.getBinaryMessenger(), "flt_hc_hud");
         channel.setMethodCallHandler(this);
     }
 
     @Override
-    public void onMethodCall(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
-        if ("getPlatformVersion".equals(call.method)) {
-            // Убедитесь, что возвращаемый текст совместим с последними стандартами
-            result.success("Android " + Build.VERSION.RELEASE);
-        } else {
-            result.notImplemented();
-        }
+    public void onMethodCall(MethodCall call, Result result) {
+        // Обработка вызовов методов
     }
 
     @Override
-    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-        if (channel != null) {
-            channel.setMethodCallHandler(null);
-            channel = null;
-        }
+    public void onDetachedFromEngine(FlutterPluginBinding binding) {
+        channel.setMethodCallHandler(null);
     }
 }
