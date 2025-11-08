@@ -1,14 +1,16 @@
 package com.example.flt_hc_hud;
 
 import androidx.annotation.NonNull;
+
+import android.os.Build;
+
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
-import io.flutter.plugin.common.MethodChannel.Result;
 
 /** FltHcHudPlugin */
-public class FltHcHudPlugin implements FlutterPlugin, MethodCallHandler {
+public final class FltHcHudPlugin implements FlutterPlugin, MethodChannel.MethodCallHandler {
     /// The MethodChannel that will handle communication between Flutter and native Android
     private MethodChannel channel;
 
@@ -19,10 +21,10 @@ public class FltHcHudPlugin implements FlutterPlugin, MethodCallHandler {
     }
 
     @Override
-    public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-        if (call.method.equals("getPlatformVersion")) {
+    public void onMethodCall(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        if ("getPlatformVersion".equals(call.method)) {
             // Убедитесь, что возвращаемый текст совместим с последними стандартами
-            result.success("Android " + android.os.Build.VERSION.RELEASE);
+            result.success("Android " + Build.VERSION.RELEASE);
         } else {
             result.notImplemented();
         }
@@ -30,7 +32,9 @@ public class FltHcHudPlugin implements FlutterPlugin, MethodCallHandler {
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-        // Отключаем обработчик вызова методов при отсоединении от движка
-        channel.setMethodCallHandler(null);
+        if (channel != null) {
+            channel.setMethodCallHandler(null);
+            channel = null;
+        }
     }
 }
